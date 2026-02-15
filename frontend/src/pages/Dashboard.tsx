@@ -113,7 +113,7 @@ const Dashboard = () => {
                     </div>
                     <div className="relative flex items-center space-x-2">
                       <div className="flex -space-x-2">
-                        {board.members.slice(0, 3).map((member, idx) => (
+                        {board.members.slice(0, 3).map((member) => (
                           <div
                             key={member.id}
                             className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-sm font-medium text-gray-700 border-2 border-white"

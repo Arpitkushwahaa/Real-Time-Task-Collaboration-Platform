@@ -4,7 +4,7 @@ import { DndContext, DragOverlay, closestCorners, PointerSensor, useSensor, useS
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 import { useBoardStore } from '../store/boardStore';
 import socket from '../services/socket';
-import { FiArrowLeft, FiPlus, FiSearch, FiClock } from 'react-icons/fi';
+import { FiArrowLeft, FiPlus, FiSearch } from 'react-icons/fi';
 import BoardList from '../components/BoardList';
 import TaskCard from '../components/TaskCard';
 import CreateListModal from '../components/CreateListModal';

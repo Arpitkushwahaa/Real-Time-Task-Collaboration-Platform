@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { FiClock, FiUser, FiAlertCircle } from 'react-icons/fi';
+import { FiClock, FiAlertCircle } from 'react-icons/fi';
 import { Task } from '../types';
 import { format } from 'date-fns';
 
@@ -101,7 +101,7 @@ const TaskCard = ({ task, isDragging = false }: TaskCardProps) => {
         {/* Assigned Users */}
         {task.assignedTo && task.assignedTo.length > 0 && (
           <div className="flex -space-x-2">
-            {task.assignedTo.slice(0, 3).map((user, idx) => (
+            {task.assignedTo.slice(0, 3).map((user) => (
               <div
                 key={user.id}
                 className="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs font-medium border-2 border-white"
