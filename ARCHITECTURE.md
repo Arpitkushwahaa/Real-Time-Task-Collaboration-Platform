@@ -16,6 +16,93 @@ The Real-Time Task Collaboration Platform is built using a modern client-server 
          └───────────────────────────┘
 ```
 
+## Database Schema Design
+
+### Entity Relationship Diagram
+
+```
+┌──────────────────────┐
+│       User           │
+│──────────────────────│
+│ _id: ObjectId (PK)   │
+│ name: String         │
+│ email: String (UQ)   │◄──────────┐
+│ password: String     │           │
+│ avatar: String       │           │ owner
+│ createdAt: Date      │           │
+│ updatedAt: Date      │           │
+└──────────────────────┘           │
+         △                         │
+         │ members                 │
+         │                         │
+         │                ┌────────────────────────┐
+         │                │       Board            │
+         │                │────────────────────────│
+         └────────────────│ _id: ObjectId (PK)     │◄───────┐
+                          │ title: String          │        │
+                          │ description: String    │        │
+                          │ owner: ObjectId (FK)   │        │ board
+                          │ members: [ObjectId]    │        │
+                          │ backgroundColor: String│        │
+                          │ createdAt: Date        │        │
+                          │ updatedAt: Date        │        │
+                          └────────────────────────┘        │
+                                   △                        │
+                                   │ board                  │
+                          ┌────────┴──────────┐            │
+                          │                   │            │
+                 ┌────────────────────┐  ┌────────────────────────┐
+                 │       List         │  │      Activity          │
+                 │────────────────────│  │────────────────────────│
+                 │ _id: ObjectId (PK) │  │ _id: ObjectId (PK)     │
+                 │ title: String      │  │ board: ObjectId (FK)   │
+                 │ board: ObjectId FK │  │ user: ObjectId (FK)    │
+                 │ position: Number   │  │ action: String (enum)  │
+                 │ createdAt: Date    │  │ entityType: String     │
+                 │ updatedAt: Date    │  │ entityId: ObjectId     │
+                 └────────────────────┘  │ details: Mixed         │
+                          △              │ createdAt: Date        │
+                          │ list         └────────────────────────┘
+                          │
+                 ┌────────────────────────┐
+                 │       Task             │
+                 │────────────────────────│
+                 │ _id: ObjectId (PK)     │
+                 │ title: String          │
+                 │ description: String    │
+                 │ list: ObjectId (FK)    │
+                 │ board: ObjectId (FK)   │
+                 │ position: Number       │
+                 │ assignedTo: [ObjectId] │
+                 │ dueDate: Date          │
+                 │ priority: String (enum)│
+                 │ labels: [String]       │
+                 │ createdAt: Date        │
+                 │ updatedAt: Date        │
+                 └────────────────────────┘
+```
+
+### Indexes Strategy
+
+**User Collection:**
+- `email: unique` - Fast login lookups
+
+**Board Collection:**
+- `owner: 1` - Query boards by owner
+- `members: 1` - Query boards by member
+- `createdAt: -1` - Sort by creation date
+
+**List Collection:**
+- `board: 1, position: 1` - Fetch lists for a board in order
+
+**Task Collection:**
+- `list: 1, position: 1` - Fetch tasks for a list in order
+- `board: 1` - Query all tasks in a board
+- `assignedTo: 1` - Query tasks by assignee
+
+**Activity Collection:**
+- `board: 1, createdAt: -1` - Fetch recent activities for a board
+
 ## Frontend Architecture
 
 ### Technology Stack
